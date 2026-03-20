@@ -1,0 +1,106 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #0b0f14;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+#gameCanvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+#ui {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  z-index: 10;
+  color: #e8eef6;
+  font-size: 18px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  user-select: none;
+}
+
+.uiRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.label {
+  opacity: 0.9;
+}
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+}
+
+#overlay:not([hidden]) {
+  display: grid;
+  place-items: center;
+}
+
+.overlayInner {
+  background: rgba(25, 30, 40, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 26px 22px;
+  width: min(520px, calc(100vw - 28px));
+  color: #f3f6fb;
+  text-align: center;
+}
+
+.overlayInner h1 {
+  font-size: 26px;
+  margin: 0 0 18px;
+  font-weight: 800;
+}
+
+.overlayInner button {
+  appearance: none;
+  border: 0;
+  border-radius: 7px;
+  background: hsl(224 55% 52%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 12px 18px;
+  cursor: pointer;
+}
+
+.overlayInner button:active {
+  transform: translateY(1px);
+}
+
+#orientationHint {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  padding: 18px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(0, 0, 0, 0.55);
+  font-weight: 650;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+#orientationHint:not([hidden]) {
+  display: grid;
+  place-items: center;
+}
+

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>珀晶矿工</title>
+    <link rel="icon" type="image/png" href="./assets/images/icon.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="gameCanvas" aria-label="游戏画布" role="img"></canvas>
+
+    <div id="ui" aria-live="polite">
+      <div class="uiRow">
+        <span class="label">分数：</span>
+        <span id="score">0</span>
+      </div>
+      <div class="uiRow">
+        <span class="label">倒计时：</span>
+        <span id="time">0</span>
+      </div>
+    </div>
+
+    <div id="orientationHint" hidden>
+      为了获得最佳体验，请将手机横过来（横屏）。
+    </div>
+
+    <div id="overlay" hidden>
+      <div class="overlayInner">
+        <h1 id="finalText">恭喜你！获得了X分！</h1>
+        <button id="restartBtn" type="button">重开一局</button>
+      </div>
+    </div>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
+

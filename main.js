@@ -84,7 +84,8 @@ class Game {
 
     // Game settings (easy tweak)
     this.GAME_DURATION_MS = 60000; // 1min
-    this.MINERALS_COUNT = 14;
+    this.MINERALS_COUNT = 14; // desktop/base
+    this.mineralsCount = this.MINERALS_COUNT;
     this.hookAngleMin = 0;
     this.hookAngleMax = 180;
     this.hookAngleSpeedDegPerSec = 95; // slower swing speed
@@ -231,7 +232,13 @@ class Game {
     if (!katyNatural) return;
 
     const katyAR = katyNatural.naturalWidth / katyNatural.naturalHeight;
-    const katyHeight = clamp(h * 0.18, 140, 260);
+    // Responsive scaling:
+    // Mobile landscape often has smaller "h", and our previous fixed clamp min
+    // (140) could make Katy/minerals too large and appear crowded.
+    const isMobile = w <= 860; // pixel threshold (you can tweak)
+    const katyHeightMin = isMobile ? 95 : 140;
+    const katyHeightMax = isMobile ? 215 : 260;
+    const katyHeight = clamp(h * (isMobile ? 0.16 : 0.18), katyHeightMin, katyHeightMax);
     const katyWidth = katyHeight * katyAR;
 
     // Place Katy visually around ~25% of the screen height.
@@ -246,7 +253,7 @@ class Game {
     const anchorX = katyCenterX;
     const anchorY = groundY; // bottom edge
 
-    const spawnHeight = katyHeight * 6;
+    const spawnHeight = katyHeight * (isMobile ? 5.2 : 6);
     const spawnTop = groundY + 14;
     const spawnBottom = Math.min(h - 18, spawnTop + spawnHeight);
     const effectiveSpawnHeight = Math.max(0, spawnBottom - spawnTop);
@@ -280,8 +287,8 @@ class Game {
       h,
       katy: { katyHeight, katyWidth, katyTop, katyX, katyCenterX, groundY, anchorX, anchorY },
       spawn: {
-        xMin: w * 0.2,
-        xMax: w * 0.8,
+        xMin: w * (isMobile ? 0.16 : 0.2),
+        xMax: w * (isMobile ? 0.84 : 0.8),
         yMin: spawnTop,
         yMax: spawnBottom,
       },
@@ -290,6 +297,9 @@ class Game {
 
     this.hookRestLength = hookRestLength;
     this.hookMaxLength = hookMaxLength;
+
+    // Adjust mineral count for mobile to avoid crowding.
+    this.mineralsCount = isMobile ? Math.max(9, Math.floor(this.MINERALS_COUNT * 0.78)) : this.MINERALS_COUNT;
   }
 
   resetAndStart() {
@@ -331,7 +341,7 @@ class Game {
     const yMin = this.layout.spawn.yMin;
     const yMax = this.layout.spawn.yMax;
 
-    for (let i = 0; i < this.MINERALS_COUNT; i++) {
+    for (let i = 0; i < this.mineralsCount; i++) {
       const isCrystal = Math.random() < 0.6;
       const type = isCrystal ? "crystal" : "stone";
       const scale = isCrystal ? pick(crystalScales) : pick(stoneScales);

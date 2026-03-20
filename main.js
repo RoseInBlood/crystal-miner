@@ -232,19 +232,24 @@ class Game {
     if (!katyNatural) return;
 
     const katyAR = katyNatural.naturalWidth / katyNatural.naturalHeight;
-    // Responsive scaling:
-    // Mobile landscape often has smaller "h", and our previous fixed clamp min
-    // (140) could make Katy/minerals too large and appear crowded.
     const isMobile = w <= 860; // pixel threshold (you can tweak)
-    const katyHeightMin = isMobile ? 95 : 140;
-    const katyHeightMax = isMobile ? 215 : 260;
-    const katyHeight = clamp(h * (isMobile ? 0.16 : 0.18), katyHeightMin, katyHeightMax);
-    const katyWidth = katyHeight * katyAR;
+    let katyHeight = 0;
+    let groundY = 0;
+    if (isMobile) {
+      // Keep the top "sky + miner character area" at exactly 1/4 screen height.
+      // We do this by fixing ground line (end of sky) at 25% of viewport height.
+      groundY = h * 0.25;
+      // Katy should also scale with the top section, but not exceed it.
+      katyHeight = groundY * 0.72; // => ~18% of viewport height
+    } else {
+      // Desktop: keep the previous proportional placement.
+      katyHeight = clamp(h * 0.18, 140, 260);
+      // Katy is drawn with centerY = groundY - katyHeight/2 => groundY = targetCenterY + katyHeight/2
+      const targetCenterY = h * 0.25;
+      groundY = clamp(targetCenterY + katyHeight / 2, katyHeight + 50, h - 140);
+    }
 
-    // Place Katy visually around ~25% of the screen height.
-    // Katy is drawn with centerY = groundY - katyHeight/2 => groundY = targetCenterY + katyHeight/2
-    const targetCenterY = h * 0.25;
-    const groundY = clamp(targetCenterY + katyHeight / 2, katyHeight + 50, h - 140);
+    const katyWidth = katyHeight * katyAR;
     const katyTop = groundY - katyHeight;
     const katyCenterX = w / 2;
     const katyX = katyCenterX - katyWidth / 2;

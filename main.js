@@ -78,7 +78,6 @@ class Game {
     this.overlay = document.getElementById("overlay");
     this.finalText = document.getElementById("finalText");
     this.restartBtn = document.getElementById("restartBtn");
-    this.orientationHintEl = document.getElementById("orientationHint");
 
     this.assets = null;
 
@@ -131,54 +130,18 @@ class Game {
     // Precomputed alpha masks for pixel-perfect collision
     this.alphaMasks = null;
 
-    this.restartBtn.addEventListener("click", () => {
-      this.tryForceLandscape();
-      this.resetAndStart();
-    });
-
-    window.addEventListener("resize", () => this.updateOrientationHint());
-    window.addEventListener("orientationchange", () => this.updateOrientationHint());
+    this.restartBtn.addEventListener("click", () => this.resetAndStart());
 
     this.canvas.addEventListener("pointerdown", (e) => {
       e.preventDefault();
-      this.tryForceLandscape();
       this.handleShoot();
     });
-  }
-
-  isPortrait() {
-    return window.innerHeight > window.innerWidth;
-  }
-
-  updateOrientationHint() {
-    if (!this.orientationHintEl) return;
-    const show = this.isPortrait();
-    this.orientationHintEl.hidden = !show;
-  }
-
-  async tryForceLandscape() {
-    this.updateOrientationHint();
-    const hintEl = this.orientationHintEl;
-    if (!hintEl) return;
-    if (!this.isPortrait()) return;
-
-    // Best-effort: use Screen Orientation API (supported in many mobile browsers).
-    try {
-      if (screen?.orientation?.lock) {
-        await screen.orientation.lock("landscape");
-      }
-    } catch {
-      // Ignore: if browser doesn't allow lock, user will see hint.
-    } finally {
-      this.updateOrientationHint();
-    }
   }
 
   async init() {
     this.assets = await loadAssets();
     this.prepareCollisionMasks();
     this.resize();
-    this.updateOrientationHint();
     this.resetAndStart();
   }
 

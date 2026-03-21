@@ -85,22 +85,3 @@ body {
   transform: translateY(1px);
 }
 
-#orientationHint {
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-  display: none;
-  padding: 18px;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.92);
-  background: rgba(0, 0, 0, 0.55);
-  font-weight: 650;
-  line-height: 1.5;
-  pointer-events: none;
-}
-
-#orientationHint:not([hidden]) {
-  display: grid;
-  place-items: center;
-}
-

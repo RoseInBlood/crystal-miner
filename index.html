@@ -10,21 +10,61 @@
   <body>
     <canvas id="gameCanvas" aria-label="游戏画布" role="img"></canvas>
 
-    <div id="ui" aria-live="polite">
-      <div class="uiRow">
-        <span class="label">分数：</span>
-        <span id="score">0</span>
+    <div id="fireUi" class="fireUi" aria-live="polite">
+      <img src="./assets/images/fire.PNG" alt="" class="fireIcon" />
+      <span id="fireCount">0</span>
+      <button type="button" id="bombBtn" class="bombBtn" disabled>炸！</button>
+    </div>
+
+    <div id="hudTopRight" class="hudTopRight" aria-live="polite">
+      <div class="hudIcons">
+        <button type="button" id="helpBtn" class="hudIconBtn" title="操作说明" aria-label="操作说明">
+          <img src="./assets/images/icons/rules.PNG" alt="" class="hudIconImg" width="24" height="24" />
+        </button>
+        <button type="button" id="pauseBtn" class="hudIconBtn" title="暂停" aria-label="暂停游戏">
+          <img src="./assets/images/icons/pause.PNG" alt="" class="hudIconImg" width="24" height="24" />
+        </button>
+        <button type="button" id="soundBtn" class="hudIconBtn" title="音效开关" aria-label="切换音效">
+          <img id="soundIcon" src="./assets/images/icons/sound.PNG" alt="" class="hudIconImg" width="24" height="24" />
+        </button>
       </div>
-      <div class="uiRow">
-        <span class="label">倒计时：</span>
-        <span id="time">0</span>
+      <div id="hudScorePanel" class="hudScorePanel">
+        <div class="uiRow">
+          <span class="label">分数：</span>
+          <span id="score">0</span>
+        </div>
+        <div class="uiRow">
+          <span class="label">倒计时：</span>
+          <span id="time">0</span>
+        </div>
       </div>
     </div>
 
-    <div id="overlay" hidden>
+    <div id="pauseOverlay" class="modalOverlay" hidden>
+      <div class="overlayInner">
+        <h1 class="modalTitle">游戏暂停中</h1>
+        <button id="resumeFromPauseBtn" type="button" class="overlayActionBtn">继续游戏</button>
+      </div>
+    </div>
+
+    <div id="helpOverlay" class="modalOverlay" hidden>
+      <div class="overlayInner overlayInnerScroll">
+        <h1 class="modalTitle">操作说明</h1>
+        <div class="helpBody">
+          <p><strong>电脑</strong>：空格或 ↓ 出钩；↑ 使用珀晶之火。</p>
+          <p><strong>手机</strong>：点击画面出钩；点左上角黄色「炸！」使用珀晶之火。</p>
+          <p><strong>分数</strong>：珀晶按大小约 <strong>50 / 150 / 300 / 500</strong> 分；石头约 <strong>10 / 15 / 20</strong> 分。</p>
+          <p><strong>铠虫</strong>：普通 <strong>2</strong> 分；身上夹带着珀晶的 <strong>602</strong> 分。抓到后约 <strong>5 秒</strong>内无法操作。</p>
+          <p><strong>珀晶之火</strong>：每累计 <strong>800</strong> 分获得 1 次珀晶之火（左上角数字），可以用来炸掉不喜欢的抓取物。</p>
+        </div>
+        <button id="resumeFromHelpBtn" type="button" class="overlayActionBtn">继续游戏</button>
+      </div>
+    </div>
+
+    <div id="overlay" class="modalOverlay modalOverlayGameover" hidden>
       <div class="overlayInner">
         <h1 id="finalText">恭喜你！获得了X分！</h1>
-        <button id="restartBtn" type="button">重开一局</button>
+        <button id="restartBtn" type="button" class="overlayActionBtn">重开一局</button>
       </div>
     </div>
 

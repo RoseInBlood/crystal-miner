@@ -17,15 +17,109 @@ body {
   height: 100vh;
 }
 
-#ui {
+.fireUi {
+  position: fixed;
+  top: 12px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #e8eef6;
+  font-size: 36px;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  user-select: none;
+}
+
+.fireUi .fireIcon {
+  height: 1em;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.bombBtn {
+  margin-left: 4px;
+  padding: 0.15em 0.45em;
+  font-size: 0.55em;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #dc2626;
+  background: #fde047;
+  border: 2px solid #ca8a04;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bombBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.bombBtn:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.hudTopRight {
   position: fixed;
   top: 12px;
   right: 16px;
   z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  user-select: none;
+}
+
+.hudIcons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.hudIconBtn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f3f6fb;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.hudIconBtn:hover {
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.hudIconBtn:active {
+  transform: translateY(1px);
+}
+
+.hudIconImg {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
+.hudScorePanel {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  padding: 8px 14px 10px;
   color: #e8eef6;
   font-size: 18px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
-  user-select: none;
 }
 
 .uiRow {
@@ -33,24 +127,29 @@ body {
   align-items: baseline;
   justify-content: flex-end;
   gap: 8px;
-  margin: 6px 0;
+  margin: 4px 0;
 }
 
 .label {
   opacity: 0.9;
 }
 
-#overlay {
+.modalOverlay {
   position: fixed;
   inset: 0;
-  z-index: 20;
-  background: rgba(0, 0, 0, 0.6);
+  z-index: 25;
+  background: rgba(0, 0, 0, 0.5);
   display: none;
 }
 
-#overlay:not([hidden]) {
+.modalOverlay:not([hidden]) {
   display: grid;
   place-items: center;
+}
+
+.modalOverlayGameover {
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .overlayInner {
@@ -59,17 +158,46 @@ body {
   border-radius: 14px;
   padding: 26px 22px;
   width: min(520px, calc(100vw - 28px));
+  max-height: min(90vh, 640px);
   color: #f3f6fb;
   text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+.overlayInnerScroll {
+  overflow-y: auto;
+  text-align: left;
+  align-items: stretch;
+}
+
+.modalTitle,
 .overlayInner h1 {
   font-size: 26px;
   margin: 0 0 18px;
   font-weight: 800;
+  text-align: center;
+  width: 100%;
 }
 
-.overlayInner button {
+.helpBody {
+  font-size: 15px;
+  line-height: 1.55;
+  color: #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.helpBody p {
+  margin: 0 0 12px;
+}
+
+.helpBody p:last-child {
+  margin-bottom: 0;
+}
+
+.overlayActionBtn {
   appearance: none;
   border: 0;
   border-radius: 7px;
@@ -79,9 +207,10 @@ body {
   font-size: 16px;
   padding: 12px 18px;
   cursor: pointer;
+  margin-top: 4px;
 }
 
-.overlayInner button:active {
+.overlayActionBtn:active {
   transform: translateY(1px);
 }
 

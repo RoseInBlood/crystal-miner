@@ -47,7 +47,13 @@ const AUDIO_PATHS = {
 const ICON_SOUND_ON = "./assets/images/icons/sound.PNG";
 const ICON_SOUND_OFF = "./assets/images/icons/no_sound.PNG";
 
-/** 获得火焰音效音量（约比其他音效低一半） */
+/**
+ * 全局输出音量 0～1（背景音乐 + 所有音效一起缩放）。
+ * 想整体小声：只改这一个数即可，例如 0.35、0.25。
+ */
+const AUDIO_MASTER_GAIN = 0.4;
+
+/** 获得火焰音效相对其它音效的倍数（在 MASTER 之上再乘，仍比其它音效轻） */
 const FIRE_GET_VOLUME = 0.5;
 
 function createAudioPool(paths) {
@@ -55,8 +61,14 @@ function createAudioPool(paths) {
   for (const [key, src] of Object.entries(paths)) {
     const a = new Audio(src);
     a.preload = "auto";
-    if (key === "background") a.loop = true;
-    if (key === "fireGet") a.volume = FIRE_GET_VOLUME;
+    if (key === "background") {
+      a.loop = true;
+      a.volume = AUDIO_MASTER_GAIN;
+    } else if (key === "fireGet") {
+      a.volume = AUDIO_MASTER_GAIN * FIRE_GET_VOLUME;
+    } else {
+      a.volume = AUDIO_MASTER_GAIN;
+    }
     out[key] = a;
   }
   return out;
@@ -562,7 +574,7 @@ class Game {
   playFireGetSfx() {
     if (!this.soundEnabled || !this.audio?.fireGet || this.menuPaused) return;
     const el = this.audio.fireGet;
-    el.volume = FIRE_GET_VOLUME;
+    el.volume = AUDIO_MASTER_GAIN * FIRE_GET_VOLUME;
     try {
       el.pause();
       el.currentTime = 0;
